@@ -9,8 +9,9 @@ A collection of **TypeScript [k6](https://k6.io) load-testing scenarios** —
 smoke, load, soak, spike, and breakpoint profiles with real pass/fail
 thresholds.
 
-The **k6 CLI runs directly** on your machine (`brew install k6`), so every
-flag, command, and bit of k6 tooling is available. The test target — a
+The **k6 CLI runs directly** on your machine (see
+[Prerequisites](#prerequisites) or run `make setup`), so every flag, command,
+and bit of k6 tooling is available. The test target — a
 **self-hosted [QuickPizza](https://github.com/grafana/quickpizza)** instance —
 is the only thing containerized. k6 runs `.ts` natively, so scenarios have no
 build step; types are enforced separately by `tsc --noEmit`.
