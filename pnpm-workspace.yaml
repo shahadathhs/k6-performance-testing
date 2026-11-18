@@ -1,0 +1,5 @@
+packages:
+  # Shared scenario helpers/config become workspace members as the repo
+  # grows (e.g. packages/config, packages/helpers). The root package is a
+  # workspace member implicitly.
+  - packages/*

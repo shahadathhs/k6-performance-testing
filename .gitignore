@@ -1,0 +1,17 @@
+# ── Node ──
+node_modules/
+.pnpm-store/
+*.tsbuildinfo
+
+# ── Env / secrets ──
+.env
+.env.local
+
+# ── Editor ──
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# ── k6 output ──
+results/
