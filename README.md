@@ -141,7 +141,7 @@ The shared [`lib/config.ts`](lib/config.ts) resolves the target:
 
 | Option                             | What you get                                                                 |
 | ---------------------------------- | ---------------------------------------------------------------------------- |
-| default                            | end-of-test summary in the terminal (what the docs/basics.md guide explains) |
+| default                            | end-of-test summary in the terminal (what the docs/BASICS.md guide explains) |
 | `K6_WEB_DASHBOARD=true k6 run …`   | live local dashboard at `127.0.0.1:5665` — charts while the test runs        |
 | `k6 run --out json=results.json …` | raw metric samples to a file for scripted analysis                           |
 | Prometheus + Grafana (self-hosted) | long-term storage, dashboards, and alerting on your own infra                |
@@ -168,8 +168,9 @@ k6-performance-testing/
 
 ## Docs
 
-- [docs/basics.md](docs/basics.md) — k6 load-testing fundamentals: VUs,
-  requests, latency, throughput, iterations, and how to read each metric.
+- [docs/BASICS.md](docs/BASICS.md) — k6 load-testing fundamentals: VUs,
+  requests, latency, throughput, iterations, checks, thresholds, scenarios,
+  and how to read the end-of-test summary.
 
 ## Contributing
 

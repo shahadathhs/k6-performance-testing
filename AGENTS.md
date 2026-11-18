@@ -13,7 +13,7 @@ k6-performance-testing/
 ├── lib/                # shared config/helpers imported by all scenarios
 ├── packages/           # future shared helpers as workspace members
 ├── compose.yaml        # self-hosted QuickPizza test target (:3333)
-├── docs/               # concept notes and guides (docs/basics.md)
+├── docs/               # concept notes and guides (docs/BASICS.md)
 └── .github/workflows/  # CI: oxlint + prettier + tsc
 ```
 
