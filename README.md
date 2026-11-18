@@ -172,6 +172,9 @@ k6-performance-testing/
 - [docs/BASICS.md](docs/BASICS.md) — k6 load-testing fundamentals: VUs,
   requests, latency, throughput, iterations, checks, thresholds, scenarios,
   and how to read the end-of-test summary.
+- [docs/SCRIPTING.md](docs/SCRIPTING.md) — how a k6 script works: the export
+  contract (`options`, `default`, `setup`, `teardown`), execution lifecycle,
+  and the mental model.
 
 ## Contributing
 
