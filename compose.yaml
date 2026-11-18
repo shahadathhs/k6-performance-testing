@@ -1,0 +1,11 @@
+# Self-hosted QuickPizza — Grafana's official k6 practice target.
+# https://github.com/grafana/quickpizza
+#
+#   docker compose up -d quickpizza   # (or: make up)
+#
+# Scenarios reach it at http://localhost:3333 (see lib/config.ts).
+services:
+  quickpizza:
+    image: ghcr.io/grafana/quickpizza-local:latest
+    ports:
+      - "3333:3333"
