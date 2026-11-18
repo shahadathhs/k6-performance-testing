@@ -1,11 +1,9 @@
-
----
-
 # k6 Load Testing Basics
 
 This document explains the fundamental concepts in k6 load testing, along with common output metrics and interpretations for high or low values.
 
 ## 1. Virtual Users (VUs)
+
 - **Definition**: Virtual Users (VUs) simulate real users interacting with the application by running scripts that emulate actions such as making requests, waiting for responses, and performing tasks.
 - **Configuration**: The number of VUs defines the concurrent load on the system.
 - **Output Reference**:
@@ -16,6 +14,7 @@ This document explains the fundamental concepts in k6 load testing, along with c
   - **Low VU Count**: Used in baseline or smoke tests to verify basic application functionality with minimal load.
 
 ## 2. Request
+
 - **Definition**: A request is an HTTP call made by a VU to the server, representing how users interact with the application.
 - **Details**: Each request can specify HTTP methods (e.g., GET, POST), headers, and payload data.
 - **Output Reference**:
@@ -29,6 +28,7 @@ This document explains the fundamental concepts in k6 load testing, along with c
   - **High `http_req_failed`**: Indicates issues with reliability or server errors, often related to improper configuration or capacity constraints.
 
 ## 3. Latency
+
 - **Definition**: Latency measures the time taken for a request to reach the server and for the first byte of the response to arrive back, also called time-to-first-byte (TTFB).
 - **Output Reference**:
   - **`http_req_waiting`**: Latency time, showing the server’s response time before sending the first byte.
@@ -38,6 +38,7 @@ This document explains the fundamental concepts in k6 load testing, along with c
   - **Low Latency**: Indicates a highly responsive server; generally desirable but can also signify a light load.
 
 ## 4. Throughput
+
 - **Definition**: Throughput is the amount of data processed by the server per unit of time, often measured in requests per second (RPS). It reflects the system's ability to handle concurrent load.
 - **Output Reference**:
   - **`iteration_duration`**: Duration of each iteration, helping calculate average throughput across VUs.
@@ -47,6 +48,7 @@ This document explains the fundamental concepts in k6 load testing, along with c
   - **Low Throughput**: Could indicate limited server capacity, throttling, or bottlenecks. It’s generally acceptable in low-load tests but can be a concern under stress conditions.
 
 ## 5. Iterations
+
 - **Definition**: An iteration is a complete execution of the test script by a VU. Each VU can perform multiple iterations based on test duration or iteration count settings.
 - **Output Reference**:
   - **`iterations`**: Total number of completed iterations, reflecting the total test cycles performed.
