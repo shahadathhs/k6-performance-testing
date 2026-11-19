@@ -65,17 +65,22 @@ QuickPizza service from [`compose.yaml`](compose.yaml) — the shared
 [`lib/config.ts`](lib/config.ts) reads a `BASE_URL` env override for pointing
 at another instance.
 
-| Scenario                                       | Command                               | Profile             | Verifies                                     |
-| ---------------------------------------------- | ------------------------------------- | ------------------- | -------------------------------------------- |
-| [first-script.ts](intro/first-script.ts)       | `make run s=intro/first-script.ts`    | 10 VUs · 10s        | hello world                                  |
-| [smoke-test.ts](intro/smoke-test.ts)           | `make run s=intro/smoke-test.ts`      | 1 VU · 30s          | target works at all                          |
-| [load-test.ts](intro/load-test.ts)             | `make run s=intro/load-test.ts`       | 10→0 VUs · 1m       | normal peak behavior                         |
-| [stress-test.ts](intro/stress-test.ts)         | `make run s=intro/stress-test.ts`     | 50→0 VUs · 9m       | failure mode beyond peak                     |
-| [soak-test.ts](intro/soak-test.ts)             | `make run s=intro/soak-test.ts`       | 1000 VUs · **24h**  | long-run leaks/degradation                   |
-| [breakpoint-test.ts](intro/breakpoint-test.ts) | `make run s=intro/breakpoint-test.ts` | →10000 VUs · **2h** | system ceiling                               |
-| [spike-test.ts](intro/spike-test.ts)           | `make run s=intro/spike-test.ts`      | 10000→0 VUs · 3m    | burst + recovery                             |
-| [thresholds.ts](intro/thresholds.ts)           | `make run s=intro/thresholds.ts`      | 10 VUs · 10s        | pass/fail criteria (p95, error rate, checks) |
-| [custom-metrics.ts](intro/custom-metrics.ts)   | `make run s=intro/custom-metrics.ts`  | 5 VUs · 5s          | custom Counter & Trend with thresholds       |
+| Scenario                                           | Command                                 | Profile             | Verifies                                      |
+| -------------------------------------------------- | --------------------------------------- | ------------------- | --------------------------------------------- |
+| [first-script.ts](intro/first-script.ts)           | `make run s=intro/first-script.ts`      | 10 VUs · 10s        | hello world                                   |
+| [smoke-test.ts](intro/smoke-test.ts)               | `make run s=intro/smoke-test.ts`        | 1 VU · 30s          | target works at all                           |
+| [load-test.ts](intro/load-test.ts)                 | `make run s=intro/load-test.ts`         | 10→0 VUs · 1m       | normal peak behavior                          |
+| [stress-test.ts](intro/stress-test.ts)             | `make run s=intro/stress-test.ts`       | 50→0 VUs · 9m       | failure mode beyond peak                      |
+| [soak-test.ts](intro/soak-test.ts)                 | `make run s=intro/soak-test.ts`         | 1000 VUs · **24h**  | long-run leaks/degradation                    |
+| [breakpoint-test.ts](intro/breakpoint-test.ts)     | `make run s=intro/breakpoint-test.ts`   | →10000 VUs · **2h** | system ceiling                                |
+| [spike-test.ts](intro/spike-test.ts)               | `make run s=intro/spike-test.ts`        | 10000→0 VUs · 3m    | burst + recovery                              |
+| [thresholds.ts](intro/thresholds.ts)               | `make run s=intro/thresholds.ts`        | 10 VUs · 10s        | pass/fail criteria (p95, error rate, checks)  |
+| [custom-metrics.ts](intro/custom-metrics.ts)       | `make run s=intro/custom-metrics.ts`    | 5 VUs · 5s          | custom Counter & Trend with thresholds        |
+| [tags.ts](intro/tags.ts)                           | `make run s=intro/tags.ts`              | 2 VUs · 10s         | custom tags slicing metrics, checks, counters |
+| [groups.ts](intro/groups.ts)                       | `make run s=intro/groups.ts`            | 2 VUs · 8s          | nested groups + `group_duration` budgets      |
+| [expected-response.ts](intro/expected-response.ts) | `make run s=intro/expected-response.ts` | 2 VUs · 8s          | expected vs unexpected response slicing       |
+| [lifecycle.ts](intro/lifecycle.ts)                 | `make run s=intro/lifecycle.ts`         | 2 VUs · 6s          | init/setup/VU/teardown order, live            |
+| [abort.ts](intro/abort.ts)                         | `make run s=intro/abort.ts`             | 10 VUs · 10s        | `exec.test.abort()` when target is down       |
 
 ⚠️ Stress, soak and breakpoint scenarios exceed normal load (and run long) —
 never point them at a system you don't own.
