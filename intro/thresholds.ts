@@ -22,12 +22,16 @@ export const options: Options = {
   vus: 10,
   duration: "10s",
   thresholds: {
-    // p(95) under 500ms — the latency budget for the slowest 5% of requests
-    http_req_duration: ["p(95)<500"],
+    // latency budget: p(95) under 500ms, and no single request over 1s
+    http_req_duration: ["p(95)<500", "max<1000"],
     // at most 2% of requests may fail
     http_req_failed: ["rate<=0.02"],
+    // sanity check that the test actually ran: >10 requests total, >4 req/s
+    http_reqs: ["count>10", "rate>4"],
     // at least 98% of all check assertions must pass
     checks: ["rate>=0.98"],
+    // all 10 VUs must have been active (metric value must exceed 9)
+    vus: ["value>9"],
   },
 };
 
