@@ -2,8 +2,8 @@
 
 TypeScript k6 load-testing scenarios, structured as a pnpm workspace (mirrors
 the `adda` repo's tooling). The k6 CLI runs **directly** on the host
-(`brew install k6`); only the QuickPizza test target is containerized
-(`compose.yaml`).
+(installation per OS in the README prerequisites); only the QuickPizza test
+target is containerized (`compose.yaml`).
 
 ## Structure
 
@@ -37,8 +37,9 @@ make check                             # lint + typecheck (the CI gate)
   imports must include the explicit `.ts` extension (k6 requirement;
   `allowImportingTsExtensions` is enabled for this).
 - Every scenario exports `options` typed as `Options` from `k6/options`.
-- The **k6 CLI is a host dependency** (`brew install k6` — ≥ 0.53 for native
-  TS). Run it directly (`k6 run …`, `--http-debug`, `K6_WEB_DASHBOARD=true`,
+- The **k6 CLI is a host dependency** (≥ 0.53 for native TS; install per OS
+  from the [official docs](https://grafana.com/docs/k6/latest/set-up/install/)).
+  Run it directly (`k6 run …`, `--http-debug`, `K6_WEB_DASHBOARD=true`,
   …); do not reintroduce a Docker wrapper for k6.- **Test target is the self-hosted QuickPizza service** (`compose.yaml`,
   `make up`). Scenarios get the URL from `lib/config.ts` (`__ENV.BASE_URL`
   override, default `http://localhost:3333`). The public

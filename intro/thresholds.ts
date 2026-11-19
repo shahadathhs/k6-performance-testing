@@ -1,3 +1,16 @@
+/**
+ * THRESHOLDS & CHECKS — turning a run into a pass/fail test.
+ *
+ * What:  checks assert each response is correct; thresholds turn metrics
+ *        (including the checks rate) into pass/fail criteria. Crossing a
+ *        threshold makes k6 exit non-zero — the contract CI uses.
+ * Why:   without thresholds a load test is just data collection. With
+ *        them, it gates releases.
+ * Watch: the ✓/✗ marks next to each threshold in the summary. This script
+ *        deliberately poisons iteration #1 (a request to /foo → 404) so
+ *        you can watch checks fail and see how close thresholds come to
+ *        failing — lower `checks` rate tolerance to see the whole test go red.
+ */
 import { check, sleep } from "k6";
 import exec from "k6/execution";
 import http from "k6/http";
@@ -5,22 +18,23 @@ import type { Options } from "k6/options";
 
 import { BASE_URL } from "../lib/config.ts";
 
-// Thresholds + checks — a scenario is only as good as its pass criteria.
-// The test fails (non-zero exit) when any threshold is crossed, which is
-// what makes k6 usable in CI.
 export const options: Options = {
   vus: 10,
   duration: "10s",
   thresholds: {
-    http_req_duration: ["p(95)<500"], // 95th percentile under 500ms
-    http_req_failed: ["rate<=0.02"], // ≤ 2% failed requests
-    checks: ["rate>=0.98"], // ≥ 98% of checks pass
+    // p(95) under 500ms — the latency budget for the slowest 5% of requests
+    http_req_duration: ["p(95)<500"],
+    // at most 2% of requests may fail
+    http_req_failed: ["rate<=0.02"],
+    // at least 98% of all check assertions must pass
+    checks: ["rate>=0.98"],
   },
 };
 
 export default function (): void {
-  // exec.scenario exposes per-iteration test context — here we poison
-  // exactly one iteration to see checks/thresholds in action.
+  // exec.scenario exposes live test context — iterationInTest is the
+  // zero-based iteration counter across the whole test. On iteration 1 we
+  // hit /foo (which doesn't exist) to make one iteration fail its checks.
   const res = http.get(
     `${BASE_URL}${exec.scenario.iterationInTest === 1 ? "/foo" : "/api/quotes"}`,
   );

@@ -41,12 +41,12 @@ and is OS-aware ([scripts/setup.sh](scripts/setup.sh)):
 - **Windows** — run from **WSL2** (recommended); Git Bash also works for the
   checks, with choco/scoop hints for missing tools
 
-| Tool                                                         | Why                                     | Manual install                                                                                                                |
+| Tool                                                         | Why                                     | Install                                                                                                                       |
 | ------------------------------------------------------------ | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| [k6 CLI](https://grafana.com/docs/k6/latest/set-up/install/) | runs scenarios directly                 | `brew install k6`                                                                                                             |
-| Node.js ≥ 20 + pnpm 10                                       | workspace tooling (types, lint, format) | `brew install node` + `corepack enable`                                                                                       |
+| [k6 CLI](https://grafana.com/docs/k6/latest/set-up/install/) | runs scenarios directly                 | [official docs](https://grafana.com/docs/k6/latest/set-up/install/) — brew · apt/dnf/snap · choco/scoop                       |
+| Node.js ≥ 20 + pnpm 10                                       | workspace tooling (types, lint, format) | [nodejs.org](https://nodejs.org/en/download) + `corepack enable`                                                              |
 | Docker                                                       | hosts the QuickPizza test target        | [Docker Desktop](https://www.docker.com/products/docker-desktop/) · [Engine (Linux)](https://docs.docker.com/engine/install/) |
-| git + Make                                                   | basics                                  | `xcode-select --install` (macOS) · `sudo apt install build-essential` (Linux)                                                 |
+| git + Make                                                   | basics                                  | your platform's package manager (Xcode CLT on macOS, `build-essential` on Debian/Ubuntu)                                      |
 
 ## Quick start
 
@@ -70,13 +70,14 @@ at another instance.
 | [first-script.ts](intro/first-script.ts)       | `make run s=intro/first-script.ts`    | 10 VUs · 10s        | hello world                                  |
 | [smoke-test.ts](intro/smoke-test.ts)           | `make run s=intro/smoke-test.ts`      | 1 VU · 30s          | target works at all                          |
 | [load-test.ts](intro/load-test.ts)             | `make run s=intro/load-test.ts`       | 10→0 VUs · 1m       | normal peak behavior                         |
+| [stress-test.ts](intro/stress-test.ts)         | `make run s=intro/stress-test.ts`     | 50→0 VUs · 9m       | failure mode beyond peak                     |
 | [soak-test.ts](intro/soak-test.ts)             | `make run s=intro/soak-test.ts`       | 1000 VUs · **24h**  | long-run leaks/degradation                   |
 | [breakpoint-test.ts](intro/breakpoint-test.ts) | `make run s=intro/breakpoint-test.ts` | →10000 VUs · **2h** | system ceiling                               |
 | [spike-test.ts](intro/spike-test.ts)           | `make run s=intro/spike-test.ts`      | 10000→0 VUs · 3m    | burst + recovery                             |
 | [thresholds.ts](intro/thresholds.ts)           | `make run s=intro/thresholds.ts`      | 10 VUs · 10s        | pass/fail criteria (p95, error rate, checks) |
 
-⚠️ Soak and breakpoint scenarios run for hours — never point them at a system
-you don't own.
+⚠️ Stress, soak and breakpoint scenarios exceed normal load (and run long) —
+never point them at a system you don't own.
 
 ## Commands
 
@@ -172,6 +173,9 @@ k6-performance-testing/
 - [docs/BASICS.md](docs/BASICS.md) — k6 load-testing fundamentals: VUs,
   requests, latency, throughput, iterations, checks, thresholds, scenarios,
   and how to read the end-of-test summary.
+- [docs/SCRIPTING.md](docs/SCRIPTING.md) — how a k6 script works: the export
+  contract (`options`, `default`, `setup`, `teardown`), execution lifecycle,
+  and the mental model.
 
 ## Contributing
 

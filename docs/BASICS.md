@@ -175,6 +175,9 @@ This document explains the fundamental concepts in k6 load testing, along with c
 
 ## 9. Test Lifecycle (Init Context)
 
+> The full execution model — every export k6 picks up, the run order, and the
+> mental model — is covered in depth in [SCRIPTING.md](SCRIPTING.md).
+
 - **Definition**: k6 runs a script in two phases. **Init code** — top-level statements, imports, the exported `options` — runs **once per VU** before any traffic. The **default function** then runs once per iteration. Exported `setup()` and `teardown()` run once per test, before and after all VUs.
 - **Why it matters**:
   - Reading configuration (like env vars) belongs in init code — it is evaluated once and stays constant for the whole run.
