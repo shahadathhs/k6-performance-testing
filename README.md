@@ -70,13 +70,14 @@ at another instance.
 | [first-script.ts](intro/first-script.ts)       | `make run s=intro/first-script.ts`    | 10 VUs · 10s        | hello world                                  |
 | [smoke-test.ts](intro/smoke-test.ts)           | `make run s=intro/smoke-test.ts`      | 1 VU · 30s          | target works at all                          |
 | [load-test.ts](intro/load-test.ts)             | `make run s=intro/load-test.ts`       | 10→0 VUs · 1m       | normal peak behavior                         |
+| [stress-test.ts](intro/stress-test.ts)         | `make run s=intro/stress-test.ts`     | 50→0 VUs · 9m       | failure mode beyond peak                     |
 | [soak-test.ts](intro/soak-test.ts)             | `make run s=intro/soak-test.ts`       | 1000 VUs · **24h**  | long-run leaks/degradation                   |
 | [breakpoint-test.ts](intro/breakpoint-test.ts) | `make run s=intro/breakpoint-test.ts` | →10000 VUs · **2h** | system ceiling                               |
 | [spike-test.ts](intro/spike-test.ts)           | `make run s=intro/spike-test.ts`      | 10000→0 VUs · 3m    | burst + recovery                             |
 | [thresholds.ts](intro/thresholds.ts)           | `make run s=intro/thresholds.ts`      | 10 VUs · 10s        | pass/fail criteria (p95, error rate, checks) |
 
-⚠️ Soak and breakpoint scenarios run for hours — never point them at a system
-you don't own.
+⚠️ Stress, soak and breakpoint scenarios exceed normal load (and run long) —
+never point them at a system you don't own.
 
 ## Commands
 
