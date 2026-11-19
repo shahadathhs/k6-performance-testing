@@ -1,6 +1,6 @@
 # ── k6-performance-testing Makefile ──────────────────────────────────
 # Run `make` (or `make help`) to list all targets.
-# k6 runs directly on your machine (brew install k6) — only the
+# k6 runs directly on your machine (see README for install) — only the
 # QuickPizza test target is containerized (compose.yaml).
 
 .DEFAULT_GOAL := help

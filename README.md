@@ -41,12 +41,12 @@ and is OS-aware ([scripts/setup.sh](scripts/setup.sh)):
 - **Windows** — run from **WSL2** (recommended); Git Bash also works for the
   checks, with choco/scoop hints for missing tools
 
-| Tool                                                         | Why                                     | Manual install                                                                                                                |
+| Tool                                                         | Why                                     | Install                                                                                                                       |
 | ------------------------------------------------------------ | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| [k6 CLI](https://grafana.com/docs/k6/latest/set-up/install/) | runs scenarios directly                 | `brew install k6`                                                                                                             |
-| Node.js ≥ 20 + pnpm 10                                       | workspace tooling (types, lint, format) | `brew install node` + `corepack enable`                                                                                       |
+| [k6 CLI](https://grafana.com/docs/k6/latest/set-up/install/) | runs scenarios directly                 | [official docs](https://grafana.com/docs/k6/latest/set-up/install/) — brew · apt/dnf/snap · choco/scoop                       |
+| Node.js ≥ 20 + pnpm 10                                       | workspace tooling (types, lint, format) | [nodejs.org](https://nodejs.org/en/download) + `corepack enable`                                                              |
 | Docker                                                       | hosts the QuickPizza test target        | [Docker Desktop](https://www.docker.com/products/docker-desktop/) · [Engine (Linux)](https://docs.docker.com/engine/install/) |
-| git + Make                                                   | basics                                  | `xcode-select --install` (macOS) · `sudo apt install build-essential` (Linux)                                                 |
+| git + Make                                                   | basics                                  | your platform's package manager (Xcode CLT on macOS, `build-essential` on Debian/Ubuntu)                                      |
 
 ## Quick start
 
