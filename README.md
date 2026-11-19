@@ -75,6 +75,7 @@ at another instance.
 | [breakpoint-test.ts](intro/breakpoint-test.ts) | `make run s=intro/breakpoint-test.ts` | →10000 VUs · **2h** | system ceiling                               |
 | [spike-test.ts](intro/spike-test.ts)           | `make run s=intro/spike-test.ts`      | 10000→0 VUs · 3m    | burst + recovery                             |
 | [thresholds.ts](intro/thresholds.ts)           | `make run s=intro/thresholds.ts`      | 10 VUs · 10s        | pass/fail criteria (p95, error rate, checks) |
+| [custom-metrics.ts](intro/custom-metrics.ts)   | `make run s=intro/custom-metrics.ts`  | 5 VUs · 5s          | custom Counter & Trend with thresholds       |
 
 ⚠️ Stress, soak and breakpoint scenarios exceed normal load (and run long) —
 never point them at a system you don't own.
