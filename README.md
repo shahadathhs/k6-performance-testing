@@ -119,7 +119,7 @@ k6 runs **directly on your machine** — every CLI flag is at your fingertips:
 
 ```sh
 k6 run intro/smoke-test.ts                                  # basic run
-k6 run --http-debug intro/thresholds.ts                      # dump requests
+k6 run --http-debug="full" intro/thresholds.ts              # dump requests + responses, incl. bodies
 k6 run -e BASE_URL=https://quickpizza.grafana.com intro/smoke-test.ts
 k6 inspect intro/load-test.ts                                # resolved options
 ```

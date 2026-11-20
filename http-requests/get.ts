@@ -8,9 +8,12 @@
  * Why:   checks and thresholds are only as good as the fields you look at.
  *        Debugging a failing test = looking at status + error + body, not
  *        guessing.
- * Watch: run with `k6 run --http-debug http-requests/get.ts` to see full
- *        request/response dumps; note `res.url` after a redirect (k6
- *        follows 3xx by default — cap it with the `maxRedirects` option).
+ * Watch: run with `k6 run --http-debug http-requests/get.ts` to dump every
+ *        request/response — headers only by default; add =full for the
+ *        bodies: `--http-debug="full"` (and `--http-debug-redact` to mask
+ *        credential headers when debugging auth). Note `res.url` after a
+ *        redirect (k6 follows 3xx by default — cap it with the
+ *        `maxRedirects` option).
  * Course: lessons 40–45, 48 (APIs, HTTP, GET, debugging, response headers).
  */
 import http from "k6/http";
