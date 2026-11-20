@@ -10,7 +10,6 @@
  *        other tool for this — randomString needs no coordination at all).
  * Watch: the logged credentials — different on every iteration — and the
  *        201 Created check on each registration.
- * Course: lesson 64.
  */
 import { check } from "k6";
 import http from "k6/http";

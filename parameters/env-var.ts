@@ -14,7 +14,6 @@
  *        __ENV is read in the INIT context — once per VU, before traffic
  *        (docs/SCRIPTING.md §9); never pass secrets via -e (visible in
  *        shell history and process listings).
- * Course: lesson 62.
  */
 import { check } from "k6";
 import { sleep } from "k6";

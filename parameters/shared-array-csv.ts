@@ -10,7 +10,6 @@
  *        pick per source, the SharedArray side stays identical.
  * Watch: one log line per user in the file (single iteration — listing
  *        demo), then a random pick + login, identical to the JSON flow.
- * Course: lesson 67.
  */
 import { check } from "k6";
 import http from "k6/http";

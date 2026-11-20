@@ -42,7 +42,7 @@ export default function (): void {
   });
 
   group("News page", () => {
-    // deliberate 404 (the course used an error mock): unexpected response —
+    // deliberate 404: unexpected response —
     // counts toward http_req_failed and lands OUTSIDE the
     // {expected_response:true} slice. To make such a status "expected",
     // call http.setResponseCallback(http.expectedStatuses(200, 404)) in

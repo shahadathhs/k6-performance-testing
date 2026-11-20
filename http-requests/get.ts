@@ -14,7 +14,6 @@
  *        credential headers when debugging auth). Note `res.url` after a
  *        redirect (k6 follows 3xx by default — cap it with the
  *        `maxRedirects` option).
- * Course: lessons 40–45, 48 (APIs, HTTP, GET, debugging, response headers).
  */
 import http from "k6/http";
 

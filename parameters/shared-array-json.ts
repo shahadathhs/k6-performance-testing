@@ -10,7 +10,6 @@
  * Watch: the login check — each iteration picks a RANDOM user from the
  *        shared file. Re-runs tolerate already-registered users
  *        (register: 201 fresh or 400 exists), then log in either way.
- * Course: lesson 66.
  */
 import { check } from "k6";
 import http from "k6/http";

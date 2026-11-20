@@ -60,10 +60,11 @@ k6 run intro/smoke-test.ts # or: make run s=intro/smoke-test.ts
 
 ## Scenario gallery
 
-Intro-course scenarios live in [`intro/`](intro/) and target the self-hosted
-QuickPizza service from [`compose.yaml`](compose.yaml) — the shared
-[`lib/config.ts`](lib/config.ts) reads a `BASE_URL` env override for pointing
-at another instance.
+Scenarios in [`intro/`](intro/) cover the k6 fundamentals — test types,
+scripting, checks, thresholds, tags, groups and metrics — against the
+self-hosted QuickPizza service from [`compose.yaml`](compose.yaml); the
+shared [`lib/config.ts`](lib/config.ts) reads a `BASE_URL` env override
+for pointing at another instance.
 
 | Scenario                                           | Command                                 | Profile             | Verifies                                      |
 | -------------------------------------------------- | --------------------------------------- | ------------------- | --------------------------------------------- |
@@ -85,7 +86,7 @@ at another instance.
 ⚠️ Stress, soak and breakpoint scenarios exceed normal load (and run long) —
 never point them at a system you don't own.
 
-### HTTP requests (course section 4)
+### HTTP requests
 
 Scenarios in [`http-requests/`](http-requests/) walk the full API-testing
 progression against the self-hosted QuickPizza — GET, JSON parsing,
@@ -98,7 +99,7 @@ token auth, and the complete CRUD lifecycle:
 | [auth.ts](http-requests/auth.ts) | `k6 run http-requests/auth.ts` | register + token login + authenticated requests |
 | [crud.ts](http-requests/crud.ts) | `k6 run http-requests/crud.ts` | POST→GET→PUT→PATCH→DELETE with id correlation   |
 
-### Parameters (course section 5)
+### Parameters
 
 Scenarios in [`parameters/`](parameters/) cover parameterized test data —
 env vars, randomized pacing and data, and bulk data from JSON/CSV files:
@@ -111,6 +112,16 @@ env vars, randomized pacing and data, and bulk data from JSON/CSV files:
 | [random-item.ts](parameters/random-item.ts)             | `k6 run parameters/random-item.ts`       | random pick from a LIVE response array          |
 | [shared-array-json.ts](parameters/shared-array-json.ts) | `k6 run parameters/shared-array-json.ts` | `SharedArray` + `open()` from JSON              |
 | [shared-array-csv.ts](parameters/shared-array-csv.ts)   | `k6 run parameters/shared-array-csv.ts`  | `SharedArray` + papaparse from CSV              |
+
+### CLI
+
+Everything in [`cli/`](cli/) (including its [README](cli/README.md) — the
+full CLI cookbook with outputs, dashboards and HTML reports):
+
+| Scenario                                       | Command                                                     | Demonstrates                                |
+| ---------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------- |
+| [load-flags.ts](cli/load-flags.ts)             | `k6 run -u 5 -d 10s cli/load-flags.ts`                      | load profile from CLI flags, not the script |
+| [insecure-request.ts](cli/insecure-request.ts) | `k6 run --insecure-skip-tls-verify cli/insecure-request.ts` | TLS opt-out against badssl.com              |
 
 ## Commands
 
@@ -193,9 +204,10 @@ Compose files for exactly this kind of local observability stack.
 
 ```
 k6-performance-testing/
-├── intro/              # intro-course scenarios (TypeScript, runnable as-is)
-├── http-requests/      # section 4: GET/JSON/token-auth/CRUD scenarios
-├── parameters/         # section 5: env vars, random data, JSON/CSV test data
+├── intro/              # k6 fundamentals: test types, scripting, metrics (.ts)
+├── http-requests/      # GET/JSON/token-auth/CRUD scenarios
+├── parameters/         # env vars, random data, JSON/CSV test data
+├── cli/                # flag-driven load, TLS opt-out + the CLI cookbook
 ├── data/               # shared test-data files (users.json, users.csv)
 ├── lib/                # shared config/helpers (BASE_URL, jslib wrapper)
 ├── compose.yaml        # self-hosted QuickPizza test target

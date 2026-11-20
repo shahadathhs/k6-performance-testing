@@ -10,7 +10,6 @@
  * Watch: the composed pizza name in the log — a random adjective + a
  *        random name, recombined every iteration (this is literally what
  *        QuickPizza's homepage does).
- * Course: lesson 65.
  */
 import { check } from "k6";
 import http from "k6/http";

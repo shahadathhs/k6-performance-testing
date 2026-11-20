@@ -11,7 +11,6 @@
  * Watch: iteration_duration in the summary — it now VARIES (min ≠ max),
  *        and requests arrive without the periodic spikes a constant sleep
  *        creates.
- * Course: lesson 63.
  */
 import { sleep } from "k6";
 import http from "k6/http";

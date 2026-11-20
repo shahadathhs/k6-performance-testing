@@ -19,7 +19,6 @@
  * Note:  registering + logging in EVERY iteration is simple and isolated,
  *        but expensive — for big runs, do it once in setup() instead
  *        (see docs/SCRIPTING.md §6).
- * Course: lessons 49–53 (POST, assignments, token-based authentication).
  */
 import { check } from "k6";
 import http from "k6/http";

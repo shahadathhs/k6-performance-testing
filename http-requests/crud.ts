@@ -13,9 +13,6 @@
  * Watch: one ✓ per lifecycle step; PUT sends the WHOLE object, PATCH
  *        sends only the changed field ({ stars: 3 }). Forgetting that
  *        distinction is the classic real-world bug.
- * Course: lessons 54–61 (create/retrieve assignments, refactoring,
- *         redirects, PUT, PATCH, DELETE) — the old crocodiles flow
- *         rebuilt on QuickPizza ratings.
  */
 import { check } from "k6";
 import http from "k6/http";

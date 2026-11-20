@@ -9,9 +9,9 @@
  * Why:   a page is rarely one request: HTML + assets + XHR. Grouping gives
  *        you per-page budgets that match what a user actually experiences,
  *        and nesting separates the page shell from its sub-resources.
- *        (The course used mocky.io 5s/1s delays to make budgets bite;
- *        locally QuickPizza is fast, so the budgets are loose — the syntax
- *        is the point.)
+ *        (Against real-world delays these budgets bite hard; the local
+ *        QuickPizza is fast, so the budgets are loose — the syntax is
+ *        the point.)
  * Watch: group_duration in the full summary (`--summary-mode=full`) or JSON
  *        output — the compact summary hides it — plus one ✓/✗ per group
  *        threshold below.

@@ -43,7 +43,7 @@ k6 run intro/first-script.ts
   `Options` from `k6/options`. k6 runs them natively; no build step.
   Relative imports need the explicit `.ts` extension (`./config.ts`).
 - Shared code lives in `lib/` and is imported relatively
-  (`../lib/config.ts`) — never inside a course folder like `intro/`.
+  (`../lib/config.ts`) — never inside a scenario folder like `intro/`.
 - Scenarios live in folders by topic (`intro/` today). Name files after the
   technique they demonstrate (`smoke-test.ts`, `thresholds.ts`).
 - Get the target URL from the shared `lib/config.ts` (`BASE_URL`), never

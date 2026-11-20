@@ -9,9 +9,10 @@ target is containerized (`compose.yaml`).
 
 ```
 k6-performance-testing/
-├── intro/              # intro-course scenarios (.ts, k6-native — no build step)
-├── http-requests/      # course section 4: GET/JSON/token-auth/CRUD scenarios
-├── parameters/         # course section 5: env vars, random data, JSON/CSV files
+├── intro/              # k6 fundamentals: test types, scripting, metrics
+├── http-requests/      # GET/JSON/token-auth/CRUD scenarios
+├── parameters/         # env vars, random data, JSON/CSV test data
+├── cli/                # flag-driven load, TLS opt-out + CLI cookbook
 ├── data/               # shared test-data files (users.json, users.csv)
 ├── lib/                # shared config/helpers imported by all scenarios
 ├── packages/           # future shared helpers as workspace members

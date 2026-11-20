@@ -10,7 +10,6 @@
  *        endpoints; with it, you're testing flows.
  * Watch: the log — one response's value (a quote string, a count) used
  *        verbatim in the following request URL and check.
- * Course: lessons 44, 46, 47 (JSON format, parsing, correlating).
  */
 import { check } from "k6";
 import http from "k6/http";
