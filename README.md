@@ -60,24 +60,68 @@ k6 run intro/smoke-test.ts # or: make run s=intro/smoke-test.ts
 
 ## Scenario gallery
 
-Intro-course scenarios live in [`intro/`](intro/) and target the self-hosted
-QuickPizza service from [`compose.yaml`](compose.yaml) — the shared
-[`lib/config.ts`](lib/config.ts) reads a `BASE_URL` env override for pointing
-at another instance.
+Scenarios in [`intro/`](intro/) cover the k6 fundamentals — test types,
+scripting, checks, thresholds, tags, groups and metrics — against the
+self-hosted QuickPizza service from [`compose.yaml`](compose.yaml); the
+shared [`lib/config.ts`](lib/config.ts) reads a `BASE_URL` env override
+for pointing at another instance.
 
-| Scenario                                       | Command                               | Profile             | Verifies                                     |
-| ---------------------------------------------- | ------------------------------------- | ------------------- | -------------------------------------------- |
-| [first-script.ts](intro/first-script.ts)       | `make run s=intro/first-script.ts`    | 10 VUs · 10s        | hello world                                  |
-| [smoke-test.ts](intro/smoke-test.ts)           | `make run s=intro/smoke-test.ts`      | 1 VU · 30s          | target works at all                          |
-| [load-test.ts](intro/load-test.ts)             | `make run s=intro/load-test.ts`       | 10→0 VUs · 1m       | normal peak behavior                         |
-| [stress-test.ts](intro/stress-test.ts)         | `make run s=intro/stress-test.ts`     | 50→0 VUs · 9m       | failure mode beyond peak                     |
-| [soak-test.ts](intro/soak-test.ts)             | `make run s=intro/soak-test.ts`       | 1000 VUs · **24h**  | long-run leaks/degradation                   |
-| [breakpoint-test.ts](intro/breakpoint-test.ts) | `make run s=intro/breakpoint-test.ts` | →10000 VUs · **2h** | system ceiling                               |
-| [spike-test.ts](intro/spike-test.ts)           | `make run s=intro/spike-test.ts`      | 10000→0 VUs · 3m    | burst + recovery                             |
-| [thresholds.ts](intro/thresholds.ts)           | `make run s=intro/thresholds.ts`      | 10 VUs · 10s        | pass/fail criteria (p95, error rate, checks) |
+| Scenario                                           | Command                                 | Profile             | Verifies                                      |
+| -------------------------------------------------- | --------------------------------------- | ------------------- | --------------------------------------------- |
+| [first-script.ts](intro/first-script.ts)           | `make run s=intro/first-script.ts`      | 10 VUs · 10s        | hello world                                   |
+| [smoke-test.ts](intro/smoke-test.ts)               | `make run s=intro/smoke-test.ts`        | 1 VU · 30s          | target works at all                           |
+| [load-test.ts](intro/load-test.ts)                 | `make run s=intro/load-test.ts`         | 10→0 VUs · 1m       | normal peak behavior                          |
+| [stress-test.ts](intro/stress-test.ts)             | `make run s=intro/stress-test.ts`       | 50→0 VUs · 9m       | failure mode beyond peak                      |
+| [soak-test.ts](intro/soak-test.ts)                 | `make run s=intro/soak-test.ts`         | 1000 VUs · **24h**  | long-run leaks/degradation                    |
+| [breakpoint-test.ts](intro/breakpoint-test.ts)     | `make run s=intro/breakpoint-test.ts`   | →10000 VUs · **2h** | system ceiling                                |
+| [spike-test.ts](intro/spike-test.ts)               | `make run s=intro/spike-test.ts`        | 10000→0 VUs · 3m    | burst + recovery                              |
+| [thresholds.ts](intro/thresholds.ts)               | `make run s=intro/thresholds.ts`        | 10 VUs · 10s        | pass/fail criteria (p95, error rate, checks)  |
+| [custom-metrics.ts](intro/custom-metrics.ts)       | `make run s=intro/custom-metrics.ts`    | 5 VUs · 5s          | custom Counter & Trend with thresholds        |
+| [tags.ts](intro/tags.ts)                           | `make run s=intro/tags.ts`              | 2 VUs · 10s         | custom tags slicing metrics, checks, counters |
+| [groups.ts](intro/groups.ts)                       | `make run s=intro/groups.ts`            | 2 VUs · 8s          | nested groups + `group_duration` budgets      |
+| [expected-response.ts](intro/expected-response.ts) | `make run s=intro/expected-response.ts` | 2 VUs · 8s          | expected vs unexpected response slicing       |
+| [lifecycle.ts](intro/lifecycle.ts)                 | `make run s=intro/lifecycle.ts`         | 2 VUs · 6s          | init/setup/VU/teardown order, live            |
+| [abort.ts](intro/abort.ts)                         | `make run s=intro/abort.ts`             | 10 VUs · 10s        | `exec.test.abort()` when target is down       |
 
 ⚠️ Stress, soak and breakpoint scenarios exceed normal load (and run long) —
 never point them at a system you don't own.
+
+### HTTP requests
+
+Scenarios in [`http-requests/`](http-requests/) walk the full API-testing
+progression against the self-hosted QuickPizza — GET, JSON parsing,
+token auth, and the complete CRUD lifecycle:
+
+| Scenario                         | Command                        | Demonstrates                                    |
+| -------------------------------- | ------------------------------ | ----------------------------------------------- |
+| [get.ts](http-requests/get.ts)   | `k6 run http-requests/get.ts`  | the Response object, headers, debugging         |
+| [json.ts](http-requests/json.ts) | `k6 run http-requests/json.ts` | parsing JSON, extracting values, correlation    |
+| [auth.ts](http-requests/auth.ts) | `k6 run http-requests/auth.ts` | register + token login + authenticated requests |
+| [crud.ts](http-requests/crud.ts) | `k6 run http-requests/crud.ts` | POST→GET→PUT→PATCH→DELETE with id correlation   |
+
+### Parameters
+
+Scenarios in [`parameters/`](parameters/) cover parameterized test data —
+env vars, randomized pacing and data, and bulk data from JSON/CSV files:
+
+| Scenario                                                | Command                                  | Demonstrates                                    |
+| ------------------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |
+| [env-var.ts](parameters/env-var.ts)                     | `k6 run parameters/env-var.ts`           | `__ENV` with `-e` overrides and defaults        |
+| [random-think-time.ts](parameters/random-think-time.ts) | `k6 run parameters/random-think-time.ts` | jittered `sleep(randomIntBetween(…))`           |
+| [random-string.ts](parameters/random-string.ts)         | `k6 run parameters/random-string.ts`     | unique test data (`randomString`) per iteration |
+| [random-item.ts](parameters/random-item.ts)             | `k6 run parameters/random-item.ts`       | random pick from a LIVE response array          |
+| [shared-array-json.ts](parameters/shared-array-json.ts) | `k6 run parameters/shared-array-json.ts` | `SharedArray` + `open()` from JSON              |
+| [shared-array-csv.ts](parameters/shared-array-csv.ts)   | `k6 run parameters/shared-array-csv.ts`  | `SharedArray` + papaparse from CSV              |
+
+### CLI
+
+Everything in [`cli/`](cli/) (including its [README](cli/README.md) — the
+full CLI cookbook with outputs, dashboards and HTML reports):
+
+| Scenario                                       | Command                                                     | Demonstrates                                |
+| ---------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------- |
+| [load-flags.ts](cli/load-flags.ts)             | `k6 run -u 5 -d 10s cli/load-flags.ts`                      | load profile from CLI flags, not the script |
+| [insecure-request.ts](cli/insecure-request.ts) | `k6 run --insecure-skip-tls-verify cli/insecure-request.ts` | TLS opt-out against badssl.com              |
 
 ## Commands
 
@@ -100,7 +144,7 @@ k6 runs **directly on your machine** — every CLI flag is at your fingertips:
 
 ```sh
 k6 run intro/smoke-test.ts                                  # basic run
-k6 run --http-debug intro/thresholds.ts                      # dump requests
+k6 run --http-debug="full" intro/thresholds.ts              # dump requests + responses, incl. bodies
 k6 run -e BASE_URL=https://quickpizza.grafana.com intro/smoke-test.ts
 k6 inspect intro/load-test.ts                                # resolved options
 ```
@@ -160,9 +204,12 @@ Compose files for exactly this kind of local observability stack.
 
 ```
 k6-performance-testing/
-├── intro/              # intro-course scenarios (TypeScript, runnable as-is)
-├── lib/                # shared config/helpers imported by all scenarios
-├── packages/           # future shared helpers as pnpm workspace members
+├── intro/              # k6 fundamentals: test types, scripting, metrics (.ts)
+├── http-requests/      # GET/JSON/token-auth/CRUD scenarios
+├── parameters/         # env vars, random data, JSON/CSV test data
+├── cli/                # flag-driven load, TLS opt-out + the CLI cookbook
+├── data/               # shared test-data files (users.json, users.csv)
+├── lib/                # shared config/helpers (BASE_URL, jslib wrapper)
 ├── compose.yaml        # self-hosted QuickPizza test target
 ├── docs/               # concept notes (metrics, VUs, throughput…)
 └── .github/            # CI, PR/issue templates, dependabot
@@ -176,6 +223,8 @@ k6-performance-testing/
 - [docs/SCRIPTING.md](docs/SCRIPTING.md) — how a k6 script works: the export
   contract (`options`, `default`, `setup`, `teardown`), execution lifecycle,
   and the mental model.
+- [docs/HTTP.md](docs/HTTP.md) — HTTP primer for API testing: methods, status
+  codes, and authentication (API keys, tokens vs session cookies).
 
 ## Contributing
 

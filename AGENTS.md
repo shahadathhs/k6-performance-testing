@@ -9,7 +9,11 @@ target is containerized (`compose.yaml`).
 
 ```
 k6-performance-testing/
-├── intro/              # intro-course scenarios (.ts, k6-native — no build step)
+├── intro/              # k6 fundamentals: test types, scripting, metrics
+├── http-requests/      # GET/JSON/token-auth/CRUD scenarios
+├── parameters/         # env vars, random data, JSON/CSV test data
+├── cli/                # flag-driven load, TLS opt-out + CLI cookbook
+├── data/               # shared test-data files (users.json, users.csv)
 ├── lib/                # shared config/helpers imported by all scenarios
 ├── packages/           # future shared helpers as workspace members
 ├── compose.yaml        # self-hosted QuickPizza test target (:3333)
@@ -45,9 +49,17 @@ make check                             # lint + typecheck (the CI gate)
   override, default `http://localhost:3333`). The public
   `https://quickpizza.grafana.com` instance is for **small-scale** manual
   checks only (`-e BASE_URL=…`) — soak/breakpoint/spike never run against it.
-- Public QuickPizza endpoints used by scenarios: `/`, `/api/quotes`,
+- Public QuickPizza endpoints used by intro scenarios: `/`, `/api/quotes`,
   `/api/names`, `/api/adjectives`, `/api/config`, `/healthz`, `/ready`.
-  `/api/pizza` and `/api/doughs` require auth — out of scope for intro.
+  Auth (http-requests/): `POST /api/users` (register),
+  `POST /api/users/token/login` (`Authorization: Token <16 chars>`),
+  CRUD on `/api/ratings` — Rating body is `{ pizza_id, stars }` only.
+- **Test data lives in `data/`** (users.json/users.csv), read via
+  `open("../data/…")` in init code — never inside a scenario folder.
+- **jslib URL imports are isolated in `lib/jslib.ts`** — k6 has no npm
+  support, so Grafana's official library is fetched by URL at runtime.
+  Import jslib helpers from `lib/jslib.ts`, never inline URLs in
+  scenarios; add new helpers there and their types to `types/jslib.d.ts`.
 - Every non-trivial scenario should declare `thresholds` — a load test without
   pass/fail criteria is just data collection.
 - Formatting: prettier (semi, double quotes, width 100 — same config as the
