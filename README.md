@@ -98,6 +98,20 @@ token auth, and the complete CRUD lifecycle:
 | [auth.ts](http-requests/auth.ts) | `k6 run http-requests/auth.ts` | register + token login + authenticated requests |
 | [crud.ts](http-requests/crud.ts) | `k6 run http-requests/crud.ts` | POST→GET→PUT→PATCH→DELETE with id correlation   |
 
+### Parameters (course section 5)
+
+Scenarios in [`parameters/`](parameters/) cover parameterized test data —
+env vars, randomized pacing and data, and bulk data from JSON/CSV files:
+
+| Scenario                                                | Command                                  | Demonstrates                                    |
+| ------------------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |
+| [env-var.ts](parameters/env-var.ts)                     | `k6 run parameters/env-var.ts`           | `__ENV` with `-e` overrides and defaults        |
+| [random-think-time.ts](parameters/random-think-time.ts) | `k6 run parameters/random-think-time.ts` | jittered `sleep(randomIntBetween(…))`           |
+| [random-string.ts](parameters/random-string.ts)         | `k6 run parameters/random-string.ts`     | unique test data (`randomString`) per iteration |
+| [random-item.ts](parameters/random-item.ts)             | `k6 run parameters/random-item.ts`       | random pick from a LIVE response array          |
+| [shared-array-json.ts](parameters/shared-array-json.ts) | `k6 run parameters/shared-array-json.ts` | `SharedArray` + `open()` from JSON              |
+| [shared-array-csv.ts](parameters/shared-array-csv.ts)   | `k6 run parameters/shared-array-csv.ts`  | `SharedArray` + papaparse from CSV              |
+
 ## Commands
 
 | Make             | pnpm             | What it does                      |
@@ -180,8 +194,10 @@ Compose files for exactly this kind of local observability stack.
 ```
 k6-performance-testing/
 ├── intro/              # intro-course scenarios (TypeScript, runnable as-is)
-├── lib/                # shared config/helpers imported by all scenarios
-├── packages/           # future shared helpers as pnpm workspace members
+├── http-requests/      # section 4: GET/JSON/token-auth/CRUD scenarios
+├── parameters/         # section 5: env vars, random data, JSON/CSV test data
+├── data/               # shared test-data files (users.json, users.csv)
+├── lib/                # shared config/helpers (BASE_URL, jslib wrapper)
 ├── compose.yaml        # self-hosted QuickPizza test target
 ├── docs/               # concept notes (metrics, VUs, throughput…)
 └── .github/            # CI, PR/issue templates, dependabot
