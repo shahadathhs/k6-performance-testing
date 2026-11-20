@@ -85,6 +85,19 @@ at another instance.
 ⚠️ Stress, soak and breakpoint scenarios exceed normal load (and run long) —
 never point them at a system you don't own.
 
+### HTTP requests (course section 4)
+
+Scenarios in [`http-requests/`](http-requests/) walk the full API-testing
+progression against the self-hosted QuickPizza — GET, JSON parsing,
+token auth, and the complete CRUD lifecycle:
+
+| Scenario                         | Command                        | Demonstrates                                    |
+| -------------------------------- | ------------------------------ | ----------------------------------------------- |
+| [get.ts](http-requests/get.ts)   | `k6 run http-requests/get.ts`  | the Response object, headers, debugging         |
+| [json.ts](http-requests/json.ts) | `k6 run http-requests/json.ts` | parsing JSON, extracting values, correlation    |
+| [auth.ts](http-requests/auth.ts) | `k6 run http-requests/auth.ts` | register + token login + authenticated requests |
+| [crud.ts](http-requests/crud.ts) | `k6 run http-requests/crud.ts` | POST→GET→PUT→PATCH→DELETE with id correlation   |
+
 ## Commands
 
 | Make             | pnpm             | What it does                      |
@@ -182,6 +195,8 @@ k6-performance-testing/
 - [docs/SCRIPTING.md](docs/SCRIPTING.md) — how a k6 script works: the export
   contract (`options`, `default`, `setup`, `teardown`), execution lifecycle,
   and the mental model.
+- [docs/HTTP.md](docs/HTTP.md) — HTTP primer for API testing: methods, status
+  codes, and authentication (API keys, tokens vs session cookies).
 
 ## Contributing
 
