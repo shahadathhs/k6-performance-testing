@@ -10,6 +10,7 @@ target is containerized (`compose.yaml`).
 ```
 k6-performance-testing/
 ├── intro/              # intro-course scenarios (.ts, k6-native — no build step)
+├── http-requests/      # course section 4: GET/JSON/token-auth/CRUD scenarios
 ├── lib/                # shared config/helpers imported by all scenarios
 ├── packages/           # future shared helpers as workspace members
 ├── compose.yaml        # self-hosted QuickPizza test target (:3333)
@@ -45,9 +46,11 @@ make check                             # lint + typecheck (the CI gate)
   override, default `http://localhost:3333`). The public
   `https://quickpizza.grafana.com` instance is for **small-scale** manual
   checks only (`-e BASE_URL=…`) — soak/breakpoint/spike never run against it.
-- Public QuickPizza endpoints used by scenarios: `/`, `/api/quotes`,
+- Public QuickPizza endpoints used by intro scenarios: `/`, `/api/quotes`,
   `/api/names`, `/api/adjectives`, `/api/config`, `/healthz`, `/ready`.
-  `/api/pizza` and `/api/doughs` require auth — out of scope for intro.
+  Auth (http-requests/): `POST /api/users` (register),
+  `POST /api/users/token/login` (`Authorization: Token <16 chars>`),
+  CRUD on `/api/ratings` — Rating body is `{ pizza_id, stars }` only.
 - Every non-trivial scenario should declare `thresholds` — a load test without
   pass/fail criteria is just data collection.
 - Formatting: prettier (semi, double quotes, width 100 — same config as the
