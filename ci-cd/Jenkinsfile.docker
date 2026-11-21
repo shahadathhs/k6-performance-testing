@@ -1,0 +1,46 @@
+// CI/CD · Jenkinsfile.docker — the k6 stage runs in the official
+// grafana/k6 container: no k6 install needed on the agent.
+//
+// Native .ts execution needs k6 ≥ 0.53 — any current image works; pin a
+// tag for reproducibility.
+//
+// Caveat: a Jenkins running INSIDE a container can't hand its workspace
+// (a named volume) to the docker daemon — k6 exits 255, script not
+// found. Run this variant from a Jenkins installed directly on the host.
+pipeline {
+    agent any
+
+    environment {
+        // The grafana/k6 container is spawned by the host Docker daemon
+        // (not the compose network), so it reaches the QuickPizza service
+        // via the host's published port. Linux daemons: add
+        // --add-host=host.docker.internal:host-gateway or --network host.
+        BASE_URL = 'http://host.docker.internal:3333'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/shahadathhs/k6-performance-testing.git'
+            }
+        }
+
+        stage('k6') {
+            agent {
+                docker {
+                    image 'grafana/k6:2.4.0'
+                    // The image's ENTRYPOINT is `k6`; clearing it lets the
+                    // sh step below control the whole command line.
+                    args '--entrypoint=""'
+                    // Run on the same node Checkout used, so the workspace
+                    // (and the script) is visible inside the container.
+                    reuseNode true
+                }
+            }
+            steps {
+                sh 'k6 run ci-cd/ci-gate.ts --quiet'
+            }
+        }
+    }
+}

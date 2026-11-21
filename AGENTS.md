@@ -13,10 +13,11 @@ k6-performance-testing/
 ├── http-requests/      # GET/JSON/token-auth/CRUD scenarios
 ├── parameters/         # env vars, random data, JSON/CSV test data
 ├── cli/                # flag-driven load, TLS opt-out + CLI cookbook
+├── ci-cd/              # CI gate scenario + Jenkins pipelines (host/Docker)
 ├── data/               # shared test-data files (users.json, users.csv)
 ├── lib/                # shared config/helpers imported by all scenarios
 ├── packages/           # future shared helpers as workspace members
-├── compose.yaml        # self-hosted QuickPizza test target (:3333)
+├── compose.yaml        # QuickPizza target + opt-in Jenkins (make jenkins)
 ├── docs/               # concept notes and guides (docs/BASICS.md)
 └── .github/workflows/  # CI: oxlint + prettier + tsc
 ```
@@ -24,9 +25,10 @@ k6-performance-testing/
 ## Commands
 
 ```bash
-make setup                             # first-time: prerequisites + deps + QuickPizza
+make setup                             # first-time: prerequisites + deps + QuickPizza + Jenkins
 pnpm install                           # workspace deps only
 make up                                # start self-hosted QuickPizza (:3333)
+make jenkins                           # local Jenkins for ci-cd/ (:8080, compose profile)
 k6 run intro/smoke-test.ts             # any scenario directly (or: make run s=…)
 pnpm lint                              # oxlint + prettier --check
 pnpm format                            # prettier --write
