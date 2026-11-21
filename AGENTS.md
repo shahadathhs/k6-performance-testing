@@ -14,6 +14,7 @@ k6-performance-testing/
 ├── parameters/         # env vars, random data, JSON/CSV test data
 ├── cli/                # flag-driven load, TLS opt-out + CLI cookbook
 ├── ci-cd/              # CI gate scenario + Jenkins pipelines (host/Docker)
+├── browser/            # Chromium end-to-end scenarios (k6/browser module)
 ├── data/               # shared test-data files (users.json, users.csv)
 ├── lib/                # shared config/helpers imported by all scenarios
 ├── packages/           # future shared helpers as workspace members

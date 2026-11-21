@@ -137,6 +137,16 @@ decide, the pipeline reads the exit code:
 | [Jenkinsfile](ci-cd/Jenkinsfile)               | Jenkins Pipeline job      | k6 on the agent (host CLI)                |
 | [Jenkinsfile.docker](ci-cd/Jenkinsfile.docker) | Jenkins Pipeline job      | k6 in the official `grafana/k6` container |
 
+### Browser (UI) testing
+
+Browser scenarios in [`browser/`](browser/) drive a real Chromium end-to-end
+(pages, forms, screenshots) — they verify a page _works_, not just that it
+responds. Needs a local Chrome/Chromium; slow by nature, so few iterations:
+
+| Scenario                     | Command                   | Demonstrates                                                        |
+| ---------------------------- | ------------------------- | ------------------------------------------------------------------- |
+| [login.ts](browser/login.ts) | `k6 run browser/login.ts` | Chromium end-to-end: form login, rendered-header checks, screenshot |
+
 ## Commands
 
 | Make             | pnpm             | What it does                           |
@@ -223,7 +233,8 @@ k6-performance-testing/
 ├── http-requests/      # GET/JSON/token-auth/CRUD scenarios
 ├── parameters/         # env vars, random data, JSON/CSV test data
 ├── cli/                # flag-driven load, TLS opt-out + the CLI cookbook
-├── ci-cd/              # CI gate scenario + Jenkins pipelines (host/Docker/Cloud)
+├── ci-cd/              # CI gate scenario + Jenkins pipelines (host/Docker)
+├── browser/            # Chromium end-to-end scenarios (k6/browser module)
 ├── data/               # shared test-data files (users.json, users.csv)
 ├── lib/                # shared config/helpers (BASE_URL, jslib wrapper)
 ├── compose.yaml        # QuickPizza target + opt-in local Jenkins (make jenkins)
