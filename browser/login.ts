@@ -17,10 +17,10 @@
  *        survive across iterations of the same VU — clearCookies() resets
  *        them so every iteration starts logged out.
  *
- * Target: the self-hosted QuickPizza via BASE_URL (lib/config.ts) — the
- *         retired k6 practice site's login app ships with QuickPizza at
- *         /my_messages.php, so the flow runs fully local. Needs a local
- *         Chrome/Chromium (k6 finds it; K6_BROWSER_PATH overrides).
+ * Target: the self-hosted QuickPizza via BASE_URL (lib/config.ts) — its
+ *         demo login app lives at /my_messages.php, so the flow runs
+ *         fully local. Needs a local Chrome/Chromium (k6 finds it;
+ *         K6_BROWSER_PATH overrides).
  * Import: k6/browser — the graduated module (k6/experimental/browser is
  *         REMOVED in current k6). locator().textContent() is async here:
  *         await it before comparing, Promise === string is always false.
