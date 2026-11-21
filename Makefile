@@ -8,7 +8,7 @@
 PNPM := pnpm
 K6   := k6
 
-.PHONY: help setup install up down pull version run lint format format-check typecheck check
+.PHONY: help setup install up down pull jenkins version run lint format format-check typecheck check
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z_-]+:.*## / \
@@ -25,11 +25,14 @@ setup: ## First-time setup: check prerequisites, install deps, start QuickPizza
 up: ## Start the self-hosted QuickPizza target → http://localhost:3333
 	docker compose up -d quickpizza
 
-down: ## Stop QuickPizza and remove containers
-	docker compose down
+down: ## Stop QuickPizza + Jenkins and remove containers
+	docker compose --profile jenkins down
 
 pull: ## Pull the QuickPizza image (compose.yaml)
 	docker compose pull
+
+jenkins: ## Build + start local Jenkins for ci-cd/ → http://localhost:8080
+	docker compose --profile jenkins up -d --build
 
 version: ## Print the installed k6 version
 	$(K6) version

@@ -1,11 +1,40 @@
-# Self-hosted QuickPizza — Grafana's official k6 practice target.
-# https://github.com/grafana/quickpizza
+# Self-hosted test infrastructure.
 #
-#   docker compose up -d quickpizza   # (or: make up)
+#   quickpizza — Grafana's official k6 practice target.
+#     https://github.com/grafana/quickpizza
+#     docker compose up -d quickpizza   # (or: make up)
+#     Scenarios reach it at http://localhost:3333 (see lib/config.ts).
 #
-# Scenarios reach it at http://localhost:3333 (see lib/config.ts).
+#   jenkins — optional local Jenkins for the ci-cd/ pipelines.
+#     docker compose --profile jenkins up -d --build   # (or: make jenkins)
+#     UI at http://localhost:8080 — unlock password:
+#     docker compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+#     Walkthrough: ci-cd/README.md
 services:
   quickpizza:
     image: ghcr.io/grafana/quickpizza-local:latest
     ports:
       - "3333:3333"
+
+  # Opt-in via profile so `make up` keeps starting only the test target.
+  jenkins:
+    build:
+      context: ./ci-cd
+      dockerfile: jenkins.Dockerfile
+    profiles: ["jenkins"]
+    # root so the container's Jenkins user may use the mounted Docker
+    # socket — acceptable for a local sandbox, not a production pattern.
+    user: root
+    ports:
+      - "8080:8080" # web UI
+      - "50000:50000" # inbound agents
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      # lets pipeline stages spawn containers (docker-agent stages)
+      - /var/run/docker.sock:/var/run/docker.sock
+      # your checkout, read-only — a paste-in Pipeline job can test the
+      # local repo without pushing to GitHub first (see ci-cd/README.md)
+      - .:/repo:ro
+
+volumes:
+  jenkins_home:

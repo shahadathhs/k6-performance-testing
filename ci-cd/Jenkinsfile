@@ -1,0 +1,38 @@
+// CI/CD · Jenkinsfile — k6 installed on the Jenkins agent.
+//
+// `agent any` assumes k6 is on the agent — the local compose Jenkins
+// (make jenkins) bakes it in via jenkins.Dockerfile; for a Jenkins
+// installed directly on a machine: brew/apt install k6. The
+// no-install-on-agent variant: Jenkinsfile.docker.
+//
+// Jenkins job: New Item → Pipeline → Pipeline script from SCM →
+// Script Path: ci-cd/Jenkinsfile
+pipeline {
+    agent any
+
+    environment {
+        // QuickPizza service from compose.yaml — resolvable from the
+        // compose-networked Jenkins container. On a host-installed
+        // Jenkins use http://localhost:3333 instead.
+        BASE_URL = 'http://quickpizza:3333'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                // For an SCM-configured job, `checkout scm` replaces this.
+                git branch: 'main', url: 'https://github.com/shahadathhs/k6-performance-testing.git'
+            }
+        }
+
+        stage('k6') {
+            steps {
+                // The exit code IS the gate: thresholds crossed → 99 →
+                // this stage and the build go red. --quiet hides only the
+                // progress bars; the THRESHOLDS verdict still prints.
+                sh 'k6 run ci-cd/ci-gate.ts --quiet'
+            }
+        }
+    }
+}

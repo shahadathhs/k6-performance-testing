@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ── First-time setup ─────────────────────────────────────────────────
 # Verifies global prerequisites, installs workspace dependencies, and
-# starts the self-hosted QuickPizza target.
+# starts the self-hosted QuickPizza target + the local Jenkins (ci-cd/).
 #
 # Global prerequisites this script checks for:
 #   git, make, docker, node (≥ 20), pnpm (10), k6
@@ -128,15 +128,19 @@ else
   exit 1
 fi
 
-# ── Workspace + test target ───────────────────────────────────────────
+# ── Workspace + test target + CI ─────────────────────────────────────
 echo "Installing workspace dependencies…"
 pnpm install
 
 echo "Starting the self-hosted QuickPizza target…"
 docker compose up -d quickpizza >/dev/null 2>&1 || docker compose up -d quickpizza
 
+echo "Building & starting the local Jenkins (first build takes a few minutes)…"
+docker compose --profile jenkins up -d --build >/dev/null 2>&1 || docker compose --profile jenkins up -d --build
+
 echo ""
 printf "${GREEN}Setup complete.${NC}\n"
 echo "  Test target : http://localhost:3333  (QuickPizza — browse it!)"
+echo "  CI practice : http://localhost:8080  (local Jenkins — walkthrough: ci-cd/README.md)"
 echo "  Try it out  : k6 run intro/smoke-test.ts"
 echo "  Dashboard   : K6_WEB_DASHBOARD=true k6 run intro/load-test.ts"

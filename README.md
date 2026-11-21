@@ -54,7 +54,7 @@ and is OS-aware ([scripts/setup.sh](scripts/setup.sh)):
 git clone https://github.com/shahadathhs/k6-performance-testing.git
 cd k6-performance-testing
 
-make setup                 # prerequisites + deps + QuickPizza target
+make setup                 # prerequisites + deps + QuickPizza + local Jenkins
 k6 run intro/smoke-test.ts # or: make run s=intro/smoke-test.ts
 ```
 
@@ -123,20 +123,35 @@ full CLI cookbook with outputs, dashboards and HTML reports):
 | [load-flags.ts](cli/load-flags.ts)             | `k6 run -u 5 -d 10s cli/load-flags.ts`                      | load profile from CLI flags, not the script |
 | [insecure-request.ts](cli/insecure-request.ts) | `k6 run --insecure-skip-tls-verify cli/insecure-request.ts` | TLS opt-out against badssl.com              |
 
+### CI/CD pipelines
+
+Everything in [`ci-cd/`](ci-cd/) (including its
+[README](ci-cd/README.md) — the CI cookbook: exit codes, a local
+`make jenkins` setup, pipeline walkthroughs). One contract: thresholds
+decide, the pipeline reads the exit code:
+
+| Pipeline / scenario                            | Run where                 | Demonstrates                              |
+| ---------------------------------------------- | ------------------------- | ----------------------------------------- |
+| [ci-gate.ts](ci-cd/ci-gate.ts)                 | `k6 run ci-cd/ci-gate.ts` | thresholds as the CI gate (5 VUs · 15s)   |
+| [ci-gate.ts](ci-cd/ci-gate.ts) poisoned        | `POISON=true k6 run …`    | the red half — threshold breach → exit 99 |
+| [Jenkinsfile](ci-cd/Jenkinsfile)               | Jenkins Pipeline job      | k6 on the agent (host CLI)                |
+| [Jenkinsfile.docker](ci-cd/Jenkinsfile.docker) | Jenkins Pipeline job      | k6 in the official `grafana/k6` container |
+
 ## Commands
 
-| Make             | pnpm             | What it does                      |
-| ---------------- | ---------------- | --------------------------------- |
-| `make install`   | `pnpm install`   | install workspace deps            |
-| `make up`        | —                | start self-hosted QuickPizza      |
-| `make down`      | —                | stop QuickPizza + containers      |
-| `make lint`      | `pnpm lint`      | oxlint + `prettier --check`       |
-| `make format`    | `pnpm format`    | write formatting                  |
-| `make typecheck` | `pnpm typecheck` | `tsc --noEmit` over all scenarios |
-| `make check`     | —                | lint + typecheck (the CI gate)    |
-| `make run s=…`   | `k6 run …`       | run any scenario                  |
-| `make version`   | `k6 version`     | installed k6 version              |
-| `make help`      | —                | list all targets                  |
+| Make             | pnpm             | What it does                           |
+| ---------------- | ---------------- | -------------------------------------- |
+| `make install`   | `pnpm install`   | install workspace deps                 |
+| `make up`        | —                | start self-hosted QuickPizza           |
+| `make down`      | —                | stop QuickPizza + Jenkins + containers |
+| `make jenkins`   | —                | build + start local Jenkins → :8080    |
+| `make lint`      | `pnpm lint`      | oxlint + `prettier --check`            |
+| `make format`    | `pnpm format`    | write formatting                       |
+| `make typecheck` | `pnpm typecheck` | `tsc --noEmit` over all scenarios      |
+| `make check`     | —                | lint + typecheck (the CI gate)         |
+| `make run s=…`   | `k6 run …`       | run any scenario                       |
+| `make version`   | `k6 version`     | installed k6 version                   |
+| `make help`      | —                | list all targets                       |
 
 ## Running scenarios
 
@@ -208,9 +223,10 @@ k6-performance-testing/
 ├── http-requests/      # GET/JSON/token-auth/CRUD scenarios
 ├── parameters/         # env vars, random data, JSON/CSV test data
 ├── cli/                # flag-driven load, TLS opt-out + the CLI cookbook
+├── ci-cd/              # CI gate scenario + Jenkins pipelines (host/Docker/Cloud)
 ├── data/               # shared test-data files (users.json, users.csv)
 ├── lib/                # shared config/helpers (BASE_URL, jslib wrapper)
-├── compose.yaml        # self-hosted QuickPizza test target
+├── compose.yaml        # QuickPizza target + opt-in local Jenkins (make jenkins)
 ├── docs/               # concept notes (metrics, VUs, throughput…)
 └── .github/            # CI, PR/issue templates, dependabot
 ```
