@@ -2,7 +2,7 @@
   "name": "k6-performance-testing",
   "version": "0.1.0",
   "private": true,
-  "description": "TypeScript k6 load-testing scenarios — pnpm workspace, k6 binary pinned via Docker Compose",
+  "description": "TypeScript k6 load-testing scenarios — pnpm workspace; k6 CLI runs on the host, QuickPizza target via Docker Compose",
   "packageManager": "pnpm@10.0.0",
   "scripts": {
     "typecheck": "tsc --noEmit",
